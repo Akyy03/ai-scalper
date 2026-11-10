@@ -1,0 +1,281 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #12161f;
+  color: #d1d4dc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+.app-viewport {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* HEADER BAR */
+.header-bar {
+  height: 52px;
+  background-color: #1e222d;
+  border-bottom: 1px solid #2a2e39;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #f0f3fa;
+}
+
+.env-badge {
+  background: #2a2e39;
+  color: #787b86;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.metrics-group {
+  display: flex;
+  gap: 24px;
+}
+
+.metric-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.m-label {
+  font-size: 10px;
+  color: #787b86;
+  text-transform: uppercase;
+}
+
+.m-value {
+  font-weight: 600;
+  font-size: 13px;
+  color: #f0f3fa;
+}
+
+.pos { color: #089981; }
+.neg { color: #f23645; }
+
+.controls-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #787b86;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #089981;
+}
+
+.btn-primary {
+  background-color: #2962ff;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #1e53e5;
+}
+
+/* WORKSPACE GRID FIXAT */
+.workspace-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 8px;
+  padding: 8px;
+  width: 100%;
+  height: calc(100vh - 52px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.panel {
+  background-color: #1e222d;
+  border: 1px solid #2a2e39;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-top {
+  height: 38px;
+  padding: 0 12px;
+  border-bottom: 1px solid #2a2e39;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.panel-top h2 {
+  font-size: 11px;
+  font-weight: 600;
+  color: #787b86;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.meta-info {
+  font-size: 11px;
+  color: #5d606b;
+}
+
+/* DATA TABLE CONTAINER */
+.table-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  position: sticky;
+  top: 0;
+  background-color: #1e222d;
+  color: #787b86;
+  font-weight: 500;
+  font-size: 11px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #2a2e39;
+}
+
+.data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #2a2e39;
+}
+
+.data-table tbody tr:hover {
+  background-color: #2a2e39;
+  cursor: pointer;
+}
+
+.data-table tbody tr.selected {
+  background-color: #172642;
+}
+
+.col-time { color: #787b86; }
+.col-sym { font-weight: 600; color: #f0f3fa; }
+.col-num { font-family: monospace; }
+.col-sub { color: #9db2ce; font-family: monospace; }
+
+.tag {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+.tag.BUY { background: rgba(8, 153, 129, 0.2); color: #089981; }
+.tag.SELL { background: rgba(242, 54, 69, 0.2); color: #f23645; }
+.tag.HOLD { background: rgba(120, 123, 134, 0.2); color: #787b86; }
+
+.status-text.filled { color: #089981; }
+
+/* PANEL INSPECTOR */
+.panel-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  padding: 24px;
+  text-align: center;
+  color: #5d606b;
+  font-size: 12px;
+}
+
+.asset-picker {
+  margin-right: 8px;
+}
+
+.asset-select {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.asset-select:hover {
+  border-color: #64748b;
+}
+
+.asset-select:focus {
+  border-color: #3b82f6;
+}
+
+/* Stil pentru butonul de Auto-Mode */
+.btn-secondary {
+  background-color: #2a2f3d;
+  color: #a0aec0;
+  border: 1px solid #4a5568;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #374151;
+  color: #ffffff;
+  border-color: #718096;
+}
+
+.btn-secondary.active-auto {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-color: #10b981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+}

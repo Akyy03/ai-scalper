@@ -1,0 +1,147 @@
+<div class="app-viewport">
+  
+  <header class="header-bar">
+    <div class="brand-group">
+      <span class="brand-title">AI Scalper Engine</span>
+      <span class="env-badge">Paper Trading</span>
+    </div>
+
+    <div class="metrics-group">
+      <div class="metric-block">
+        <span class="m-label">Equity</span>
+        <span class="m-value">${{ tradingService.balance().total_equity | number:'1.2-2' }}</span>
+      </div>
+      <div class="metric-block">
+        <span class="m-label">Buying Power</span>
+        <span class="m-value">${{ tradingService.balance().available_cash | number:'1.2-2' }}</span>
+      </div>
+      <div class="metric-block">
+        <span class="m-label">Daily P&L</span>
+        <span class="m-value" [class.pos]="tradingService.balance().daily_pnl >= 0" [class.neg]="tradingService.balance().daily_pnl < 0">
+          {{ tradingService.balance().daily_pnl >= 0 ? '+' : '' }}${{ tradingService.balance().daily_pnl | number:'1.2-2' }} 
+          ({{ tradingService.balance().daily_pnl_percentage | number:'1.2-2' }}%)
+        </span>
+      </div>
+    </div>
+
+    <div class="controls-group">
+      <!-- ASSET PICKER DROPDOWN -->
+      <div class="asset-picker">
+        <select class="asset-select" [value]="selectedAsset().symbol" (change)="onSelectAsset(availableAssets[$any($event.target).selectedIndex])">
+          @for (asset of availableAssets; track asset.symbol) {
+            <option [value]="asset.symbol">
+              {{ asset.category === 'Crypto' ? '💰' : '📈' }} {{ asset.symbol }} ({{ asset.name }})
+            </option>
+          }
+        </select>
+      </div>
+
+      <!-- BUTON AUTO-MODE -->
+      <button class="btn-secondary" [class.active-auto]="isAutoMode()" (click)="toggleAutoMode()">
+        {{ isAutoMode() ? '🟢 Auto: ON (1m)' : '⚪ Auto: OFF' }}
+      </button>
+
+      <button class="btn-primary" (click)="onManualTrigger()">
+        Run {{ selectedAsset().symbol }}
+      </button>
+    </div>
+  </header>
+
+  <main class="workspace-grid">
+    
+    <section class="panel">
+      <div class="panel-top">
+        <h2>Execution Stream</h2>
+        <span class="meta-info">{{ tradingService.signals().length }} signals recorded</span>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Symbol</th>
+              <th>Price</th>
+              <th>Signal</th>
+              <th>EMA (9/21)</th>
+              <th>RSI</th>
+              <th>SL / TP</th>
+              <th>Order Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (s of tradingService.signals(); track s.id || s.created_at) {
+              <tr [class.selected]="s === tradingService.selectedSignal()" (click)="tradingService.selectTrade(s)">
+                <td class="col-time">{{ s.created_at | date:'HH:mm:ss' }}</td>
+                <td class="col-sym">{{ s.symbol }}</td>
+                <td class="col-num">${{ s.price | number:'1.2-2' }}</td>
+                <td>
+                  <span class="tag" [class]="s.risk_signal">{{ s.risk_signal }}</span>
+                </td>
+                <td class="col-sub">{{ s.ema_9 }} / {{ s.ema_21 }}</td>
+                <td class="col-sub">{{ s.rsi_14 }}</td>
+                <td class="col-sub">
+                  @if (s.stop_loss) {
+                    ${{ s.stop_loss }} / ${{ s.take_profit }}
+                  } @else {
+                    —
+                  }
+                </td>
+                <td>
+                  <span class="status-text" [class.filled]="s.executed">
+                    {{ s.executed ? 'Filled' : 'Skipped' }}
+                  </span>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="empty-state">No execution logs registered in current session.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside class="panel">
+      @if (tradingService.selectedSignal(); as sel) {
+        <div class="panel-top">
+          <h2>Signal Telemetry</h2>
+          <span class="meta-info">{{ sel.symbol }} @ {{ sel.created_at | date:'HH:mm:ss' }}</span>
+        </div>
+
+        <div class="panel-body">
+          <div class="summary-box" [class]="sel.risk_signal">
+            <span class="box-subtitle">Agent Verdict</span>
+            <div class="box-action">{{ sel.risk_signal }}</div>
+            <p class="box-desc">{{ sel.risk_reason }}</p>
+          </div>
+
+          <div class="info-block">
+            <span class="block-title">Market Analyst Context</span>
+            <p class="block-text">{{ sel.market_analyst_ai || 'Technical indicator trend analysis.' }}</p>
+          </div>
+
+          <div class="info-block">
+            <span class="block-title">Strategy Engine Execution</span>
+            <p class="block-text">{{ sel.strategy_ai || 'Risk metrics evaluated via ATR volatility sizing.' }}</p>
+          </div>
+
+          <div class="stats-2col">
+            <div class="stat-card">
+              <span class="s-label">RSI (14)</span>
+              <span class="s-val">{{ sel.rsi_14 }}</span>
+            </div>
+            <div class="stat-card">
+              <span class="s-label">ATR (14)</span>
+              <span class="s-val">{{ sel.atr_14 }}</span>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="empty-state">Select a transaction from the left panel to inspect decision rationale.</div>
+      }
+    </aside>
+
+  </main>
+</div>
