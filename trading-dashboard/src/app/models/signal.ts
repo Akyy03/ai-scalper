@@ -1,7 +1,6 @@
 export interface SystemHealth {
   python_api: 'online' | 'offline' | 'degraded';
   postgres_db: 'connected' | 'disconnected';
-  n8n_scheduler: 'active' | 'inactive';
   ollama_agent: 'ready' | 'busy' | 'unreachable';
 }
 

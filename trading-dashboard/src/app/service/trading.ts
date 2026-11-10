@@ -22,7 +22,6 @@ export class TradingService {
   health = signal<SystemHealth>({
     python_api: 'online',
     postgres_db: 'connected',
-    n8n_scheduler: 'active', // Poți lăsa așa sau redenumi în componenta de health
     ollama_agent: 'ready'
   });
 
